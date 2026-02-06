@@ -47,13 +47,13 @@ const details = () => {
         `,
       },
       {
-        name: "langs_to_keep",
+        name: "languages_to_keep",
         type: 'string',
         defaultValue: '',
         inputUI: {
           type: 'text',
         },
-        tooltip: `If specified, only configured languages will be left for audio and subtitles:
+        tooltip: `[Optional] If specified, only configured languages will be left for audio and subtitles:
         \\nExample:\\n
         eng,ukr
         `,
@@ -88,7 +88,9 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
   const preferred_language = inputs.preferred_language;
   const audio_codecs_to_transcode = inputs.audio_codecs_to_transcode.split(",");
   const audio_target_codec = inputs.audio_target_codec;
-  const languages_to_keep = inputs.langs_to_keep?.split(",");
+  const languages_to_keep = !!inputs.languages_to_keep
+    ? inputs.languages_to_keep?.split(",")
+    : undefined;
 
   let requireProcessing = false;
   let requireProcessingInfo = "Requires processing:"
