@@ -146,7 +146,7 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
   for (let i = 0; i < audioStreams.length; ++i) {
     const stream = audioStreams[i];
 
-    if (!!languages_to_keep && !!stream.tags?.language && !languages_to_keep.includes(stream.tags.language.toLowerCase()) {
+    if (!!languages_to_keep && !!stream.tags?.language && !languages_to_keep.includes(stream.tags.language.toLowerCase())) {
       requireProcessing = true;
       requireProcessingInfo += ` audio_stream_skip_by_lang[${stream.index},${stream.tags.language}]`
       continue;
@@ -172,7 +172,7 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
   for (let i = 0; i < subtitleStreams.length; ++i) {
     const stream = subtitleStreams[i];
 
-    if (!!languages_to_keep && !!stream.tags?.language && !languages_to_keep.includes(stream.tags.language.toLowerCase()) {
+    if (!!languages_to_keep && !!stream.tags?.language && !languages_to_keep.includes(stream.tags.language.toLowerCase())) {
       requireProcessing = true;
       requireProcessingInfo += ` subtitle_stream_skip_by_lang[${stream.index},${stream.tags.language}]`
       continue;
