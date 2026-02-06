@@ -47,15 +47,15 @@ const details = () => {
         `,
       },
       {
-        name: "languages_to_keep",
+        name: "unwanted_languages",
         type: 'string',
         defaultValue: '',
         inputUI: {
           type: 'text',
         },
-        tooltip: `[Optional] If specified, only configured languages will be left for audio and subtitles:
+        tooltip: `[Optional] If specified, the configured languages will be removed for audio and subtitles:
         \\nExample:\\n
-        eng,ukr
+        rus,eng
         `,
       }
     ],
@@ -88,8 +88,8 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
   const preferred_language = inputs.preferred_language;
   const audio_codecs_to_transcode = inputs.audio_codecs_to_transcode.split(",");
   const audio_target_codec = inputs.audio_target_codec;
-  const languages_to_keep = !!inputs.languages_to_keep
-    ? inputs.languages_to_keep.split(",")
+  const unwanted_languages = !!inputs.unwanted_languages
+    ? inputs.unwanted_languages.split(",")
     : undefined;
 
   let requireProcessing = false;
@@ -148,9 +148,9 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
   for (let i = 0; i < audioStreams.length; ++i) {
     const stream = audioStreams[i];
 
-    if (!!languages_to_keep && !!stream.tags?.language && !languages_to_keep.includes(stream.tags.language.toLowerCase())) {
+    if (!!unwanted_languages && !!stream.tags?.language && unwanted_languages.includes(stream.tags.language.toLowerCase())) {
       requireProcessing = true;
-      requireProcessingInfo += ` audio_stream_skip_by_lang[${stream.index},${stream.tags.language}]`
+      requireProcessingInfo += ` audio_stream_unwanted_lang[${stream.index},${stream.tags.language}]`
       continue;
     }
 
@@ -174,9 +174,9 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
   for (let i = 0; i < subtitleStreams.length; ++i) {
     const stream = subtitleStreams[i];
 
-    if (!!languages_to_keep && !!stream.tags?.language && !languages_to_keep.includes(stream.tags.language.toLowerCase())) {
+    if (!!unwanted_languages && !!stream.tags?.language && unwanted_languages.includes(stream.tags.language.toLowerCase())) {
       requireProcessing = true;
-      requireProcessingInfo += ` subtitle_stream_skip_by_lang[${stream.index},${stream.tags.language}]`
+      requireProcessingInfo += ` subtitle_stream_unwanted_lang[${stream.index},${stream.tags.language}]`
       continue;
     }
 
