@@ -89,7 +89,7 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
   const audio_codecs_to_transcode = inputs.audio_codecs_to_transcode.split(",");
   const audio_target_codec = inputs.audio_target_codec;
   const languages_to_keep = !!inputs.languages_to_keep
-    ? inputs.languages_to_keep?.split(",")
+    ? inputs.languages_to_keep.split(",")
     : undefined;
 
   let requireProcessing = false;
