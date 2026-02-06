@@ -79,7 +79,7 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
     infoLog: "",
   };
 
-  if (inputs.preferred_language === undefined || inputs.audio_target_codec === undefined || inputs.audio_codecs_to_transcode === undefined) {
+if (!inputs.preferred_language || !inputs.audio_target_codec || !inputs.audio_codecs_to_transcode) {
     response.processFile = false;
     response.infoLog += "☒ Inputs not entered! \n";
     return response;
