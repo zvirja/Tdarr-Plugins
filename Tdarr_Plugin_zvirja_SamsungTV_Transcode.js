@@ -53,7 +53,7 @@ const details = () => {
         inputUI: {
           type: 'text',
         },
-        tooltip: `[Optional] If specified, the configured languages will be removed for audio and subtitles:
+        tooltip: `[Optional] If specified, the configured languages will be removed for audio and subtitles (only if other languages are available):
         \\nExample:\\n
         rus,eng
         `,
@@ -148,7 +148,10 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
   for (let i = 0; i < audioStreams.length; ++i) {
     const stream = audioStreams[i];
 
-    if (!!unwanted_languages && !!stream.tags?.language && unwanted_languages.includes(stream.tags.language.toLowerCase())) {
+    if (!!unwanted_languages && !!stream.tags?.language
+        && unwanted_languages.includes(stream.tags.language.toLowerCase())
+        // keep unwanted if nothing else is available
+        && audioStreams.some((x) => !unwanted_languages.includes(x.tags?.language))) {
       requireProcessing = true;
       requireProcessingInfo += ` audio_stream_unwanted_lang[${stream.index},${stream.tags.language}]`
       continue;
@@ -174,7 +177,10 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
   for (let i = 0; i < subtitleStreams.length; ++i) {
     const stream = subtitleStreams[i];
 
-    if (!!unwanted_languages && !!stream.tags?.language && unwanted_languages.includes(stream.tags.language.toLowerCase())) {
+    if (!!unwanted_languages && !!stream.tags?.language
+        && unwanted_languages.includes(stream.tags.language.toLowerCase())
+        // keep unwanted if nothing else is available
+        && subtitleStreams.some((x) => !unwanted_languages.includes(x.tags?.language))) {
       requireProcessing = true;
       requireProcessingInfo += ` subtitle_stream_unwanted_lang[${stream.index},${stream.tags.language}]`
       continue;
